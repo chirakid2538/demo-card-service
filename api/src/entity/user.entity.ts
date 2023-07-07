@@ -5,7 +5,10 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
+import { Card } from './card.entity';
+import { Comment } from './comment.entity';
 
 @Entity()
 export class User {
@@ -27,6 +30,12 @@ export class User {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @OneToMany(() => Card, (_) => _.user)
+  cards: Card[];
+
+  @OneToMany(() => Comment, (_) => _.user)
+  comments: Comment[];
 
   public async validPassword(password): Promise<boolean> {
     return await hash.compare(password, this.password);
