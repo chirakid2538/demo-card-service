@@ -1,3 +1,5 @@
 Demo project
-- [api] api service for port ui
-- [portal] ui for client
+
+แบ่งระบบออกเป็น 2 ส่วน
+- [api] - API สำหรับการใช้งาน portal service
+- [portal] - UI สำหรับผู้ใช้งาน
