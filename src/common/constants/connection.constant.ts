@@ -1,1 +1,1 @@
-export const MYSQL_MAIN = 'mysql-con';
+export const MYSQL_MAIN = 'mysql-main-con';
