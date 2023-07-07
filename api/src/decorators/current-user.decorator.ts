@@ -6,7 +6,7 @@ export type CurrentUser = {
   getJWTData: () => SignDataJWT;
 };
 
-export const GetCurrentStore = createParamDecorator(
+export const GetCurrentUser = createParamDecorator(
   (data, host: ExecutionContext): CurrentUser => {
     const [req] = host.getArgs();
     const user = req['x-user'] as SignDataJWT;

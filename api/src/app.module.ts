@@ -12,6 +12,8 @@ import { AppService } from './app.service';
 import { MYSQL_MAIN } from './common/constants';
 import { AuthModule } from './auth/auth.module';
 import { AuthUserTokenMiddleware } from './middleware/auth-user-token.middleware';
+import { CardModule } from './card/card.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -25,15 +27,23 @@ import { AuthUserTokenMiddleware } from './middleware/auth-user-token.middleware
       },
     }),
     AuthModule,
+    CommentModule,
+    CardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthUserTokenMiddleware).forRoutes({
-      path: 'auth/user',
-      method: RequestMethod.GET,
-    });
+    consumer.apply(AuthUserTokenMiddleware).forRoutes(
+      {
+        path: 'auth/user',
+        method: RequestMethod.GET,
+      },
+      {
+        path: 'card*',
+        method: RequestMethod.ALL,
+      },
+    );
   }
 }

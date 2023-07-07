@@ -6,6 +6,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Card } from './card.entity';
 import { Comment } from './comment.entity';
@@ -32,9 +33,11 @@ export class User {
   updatedAt: Date;
 
   @OneToMany(() => Card, (_) => _.user)
+  @JoinColumn({ name: 'user_id' })
   cards: Card[];
 
   @OneToMany(() => Comment, (_) => _.user)
+  @JoinColumn({ name: 'user_id' })
   comments: Comment[];
 
   public async validPassword(password): Promise<boolean> {

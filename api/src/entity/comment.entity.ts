@@ -5,6 +5,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Card } from './card.entity';
@@ -34,8 +35,10 @@ export class Comment {
   updatedAt: Date;
 
   @ManyToOne(() => User, (_) => _.comments)
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ManyToOne(() => Card, (_) => _.comments)
+  @JoinColumn({ name: 'card_id' })
   card: Card;
 }

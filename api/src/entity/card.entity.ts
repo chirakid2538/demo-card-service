@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Comment } from './comment.entity';
@@ -46,8 +47,10 @@ export class Card {
   archivedAt: Date | null;
 
   @ManyToOne(() => User, (_) => _.cards)
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @OneToMany(() => Comment, (_) => _.card)
+  @JoinColumn({ name: 'card_id' })
   comments: Comment[];
 }

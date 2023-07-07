@@ -3,7 +3,7 @@ import { exceptionHandler } from '@/common/utils';
 import { SignInDTO, SignUpDTO } from './auth.dto';
 import {
   CurrentUser,
-  GetCurrentStore,
+  GetCurrentUser,
 } from '../decorators/current-user.decorator';
 import { AuthService } from './auth.service';
 import { SignDataJWT } from './auth.interface';
@@ -34,7 +34,7 @@ export class AuthController {
 
   @Get('user')
   async sessionIdToken(
-    @GetCurrentStore() user: CurrentUser,
+    @GetCurrentUser() user: CurrentUser,
   ): Promise<SignDataJWT> {
     try {
       return user.getJWTData();
