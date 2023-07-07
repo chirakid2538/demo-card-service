@@ -65,15 +65,15 @@ export class AuthService {
       createdAt: user.createdAt.toISOString(),
       updatedAt: user.updatedAt.toISOString(),
     };
-    const userToken = jwt.sign(signData, JWT_SECRET, {
+    const idToken = jwt.sign(signData, JWT_SECRET, {
       expiresIn: this.ttlJWT,
     });
 
-    return userToken;
+    return idToken;
   }
 
-  async verifyUserToken(userToken: string): Promise<SignDataJWT> {
-    const signData = jwt.verify(userToken, JWT_SECRET);
+  async verifyIdToken(idToken: string): Promise<SignDataJWT> {
+    const signData = jwt.verify(idToken, JWT_SECRET);
     return signData;
   }
 }

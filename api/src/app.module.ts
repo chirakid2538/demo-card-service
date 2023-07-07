@@ -1,11 +1,17 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import mysqlCon from '@/common/configs/mysql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { MYSQL_MAIN } from './common/constants';
 import { AuthModule } from './auth/auth.module';
+import { AuthUserTokenMiddleware } from './middleware/auth-user-token.middleware';
 
 @Module({
   imports: [
@@ -23,4 +29,11 @@ import { AuthModule } from './auth/auth.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthUserTokenMiddleware).forRoutes({
+      path: 'auth/user',
+      method: RequestMethod.GET,
+    });
+  }
+}

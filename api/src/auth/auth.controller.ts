@@ -1,11 +1,17 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { exceptionHandler } from '@/common/utils';
 import { SignInDTO, SignUpDTO } from './auth.dto';
+import {
+  CurrentUser,
+  GetCurrentStore,
+} from '../decorators/current-user.decorator';
 import { AuthService } from './auth.service';
+import { SignDataJWT } from './auth.interface';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @Post('sign-up')
   async signUp(@Body() body: SignUpDTO): Promise<{ uid: number }> {
     try {
@@ -17,10 +23,21 @@ export class AuthController {
   }
 
   @Post('sign-in')
-  async signIn(@Body() body: SignInDTO): Promise<{ userToken: string }> {
+  async signIn(@Body() body: SignInDTO): Promise<{ idToken: string }> {
     try {
-      const userToken = await this.authService.signIn(body);
-      return { userToken };
+      const idToken = await this.authService.signIn(body);
+      return { idToken };
+    } catch (error) {
+      throw exceptionHandler(error);
+    }
+  }
+
+  @Get('user')
+  async sessionIdToken(
+    @GetCurrentStore() user: CurrentUser,
+  ): Promise<SignDataJWT> {
+    try {
+      return user.getJWTData();
     } catch (error) {
       throw exceptionHandler(error);
     }

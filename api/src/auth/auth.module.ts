@@ -11,5 +11,6 @@ import { AuthService } from './auth.service';
   imports: [TypeOrmModule.forFeature([User], MYSQL_MAIN)],
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
