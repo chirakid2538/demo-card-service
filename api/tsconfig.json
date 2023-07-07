@@ -18,7 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/common/*": ["src/common/*"]
+      "@/common/*": ["src/common/*"],
+      "@/entity/*": ["src/entity/*"]
     }
   }
 }

@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MYSQL_MAIN } from './common/constants';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MYSQL_MAIN } from './common/constants';
         return config.get('mysql.con');
       },
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
