@@ -13,7 +13,6 @@ import { MYSQL_MAIN } from './common/constants';
 import { AuthModule } from './auth/auth.module';
 import { AuthUserTokenMiddleware } from './middleware/auth-user-token.middleware';
 import { CardModule } from './card/card.module';
-import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -27,7 +26,6 @@ import { CommentModule } from './comment/comment.module';
       },
     }),
     AuthModule,
-    CommentModule,
     CardModule,
   ],
   controllers: [AppController],
