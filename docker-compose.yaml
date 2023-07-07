@@ -1,6 +1,7 @@
 version: '3.8'
 services:
-  apis:
+  api:
+    container_name: api
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -12,3 +13,19 @@ services:
       - /app/node_modules
     ports:
       - ${API_EXTERNAL_PORT}:${API_INTERNAL_PORT}
+  portal:
+    container_name: portal
+    build:
+      context: ./portal
+      dockerfile: Dockerfile
+    command: npm run dev
+    env_file:
+      - ./portal/.env
+    volumes:
+      - ./portal:/app
+      - /app/node_modules
+    ports:
+      - ${PORTAL_EXTERNAL_PORT}:${PORTAL_INTERNAL_PORT}
+    depends_on:
+      - api
+
