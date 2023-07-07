@@ -2,13 +2,13 @@ version: '3.8'
 services:
   apis:
     build:
-      context: .
+      context: ./api
       dockerfile: Dockerfile
     command: npm run start:dev
     env_file:
-      - .env
+      - ./api/.env
     volumes:
-      - ./:/app
+      - ./api:/app
       - /app/node_modules
     ports:
-      - ${PORT}:${PORT}
+      - ${API_EXTERNAL_PORT}:${API_INTERNAL_PORT}
