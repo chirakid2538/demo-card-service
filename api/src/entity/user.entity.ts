@@ -54,8 +54,10 @@ export class User {
 
   public getProfileImageURL(): string | null {
     const baseURL = process.env.CDN_BASE_URL;
-    return baseURL && this.profileImage
-      ? new URL(`${baseURL}/${this.profileImage}`).toString()
-      : null;
+    if (!Boolean(baseURL) || !Boolean(this.profileImage)) {
+      return null;
+    }
+    const path = String(this.profileImage).replace(/^public\//, '');
+    return new URL(`${baseURL}/${path}`).toString();
   }
 }
