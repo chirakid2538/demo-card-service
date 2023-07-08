@@ -40,6 +40,23 @@ export class DeleteCardDTO {
   cardId: number;
 }
 
+export class UpdateCardDTO {
+  @Exclude()
+  userId: number;
+
+  @IsInt()
+  @Min(1)
+  cardId: number;
+
+  @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @IsNotEmpty()
+  @IsString()
+  message: string;
+}
+
 export class GetPaginationCardDTO {
   @Type(() => Number)
   @IsInt()

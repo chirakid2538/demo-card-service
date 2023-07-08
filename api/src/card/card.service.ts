@@ -1,6 +1,10 @@
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { DataSource, Like } from 'typeorm';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { DataSource, IsNull, Like } from 'typeorm';
 import { MYSQL_MAIN, PERPAGE } from '@/common/constants';
 import date from '@/common/utils/date.util';
 import { EXCEPTION_COMMON } from '@/common/constants/exception';
@@ -12,6 +16,7 @@ import {
   DeleteCardDTO,
   GetOneCardDTO,
   GetPaginationCardDTO,
+  UpdateCardDTO,
   UpdateCardStateDTO,
 } from './card.dto';
 
@@ -49,11 +54,41 @@ export class CardService {
       const card = await queryRunner.manager.findOneOrFail(Card, {
         where: {
           id: Number(params.cardId),
-          archivedAt: null,
+          archivedAt: IsNull(),
         },
       });
       await queryRunner.commitTransaction();
       return card;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async update(params: UpdateCardDTO): Promise<void> {
+    const card = await this.getOne({ cardId: Number(params.cardId) });
+
+    if (Number(card.userId) !== Number(params.userId)) {
+      throw new BadRequestException(EXCEPTION_COMMON.PERMISSION_DENIED);
+    }
+
+    const queryRunner = await this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+
+      const result = await queryRunner.manager.update(
+        Card,
+        { id: Number(card.id) },
+        { title: String(params.title), message: String(params.message) },
+      );
+
+      if (result.affected === 0) {
+        throw new NotFoundException(EXCEPTION_COMMON.AFFECTED_ROWS_ZERO);
+      }
+
+      await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
@@ -102,7 +137,7 @@ export class CardService {
         where: {
           ...(params.state ? { state: params.state } : {}),
           ...(params.query ? { title: Like(`%${params.query}%`) } : {}),
-          archivedAt: null,
+          archivedAt: IsNull(),
         },
         relations: {
           user: true,
@@ -154,7 +189,7 @@ export class CardService {
       await queryRunner.startTransaction();
       const result = await queryRunner.manager.update(
         Card,
-        { id: Number(params.cardId), archivedAt: null },
+        { id: Number(params.cardId), archivedAt: IsNull() },
         { archivedAt: date().toDate() },
       );
 

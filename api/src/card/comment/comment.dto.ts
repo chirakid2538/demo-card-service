@@ -22,13 +22,22 @@ export class CreateCommentDTO {
   message: string;
 }
 
-export class DeleteCommentDTO {
+export class UpdateCommentDTO {
   @Exclude()
   userId: number;
 
   @IsInt()
   @Min(1)
-  cardId;
+  commentId;
+
+  @IsNotEmpty()
+  @IsString()
+  message: string;
+}
+
+export class DeleteCommentDTO {
+  @Exclude()
+  userId: number;
 
   @IsInt()
   @Min(1)

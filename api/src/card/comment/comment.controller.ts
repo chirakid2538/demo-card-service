@@ -1,9 +1,18 @@
 import { exceptionHandler } from '@/common/utils';
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   CreateCommentDTO,
   DeleteCommentDTO,
   GetPaginationCommentDTO,
+  UpdateCommentDTO,
 } from './comment.dto';
 import { CommentService } from './comment.service';
 import { ResponseComment, ResponsePaginate } from '@/common/interfaces';
@@ -24,6 +33,20 @@ export class CommentController {
       body.userId = user.getId();
       const comment = await this.commentService.create(body);
       return { commentId: comment.id };
+    } catch (error) {
+      throw exceptionHandler(error);
+    }
+  }
+
+  @Patch()
+  async update(
+    @GetCurrentUser() user: CurrentUser,
+    @Body() body: UpdateCommentDTO,
+  ) {
+    try {
+      body.userId = user.getId();
+      await this.commentService.update(body);
+      return {};
     } catch (error) {
       throw exceptionHandler(error);
     }

@@ -20,6 +20,7 @@ import {
   DeleteCardDTO,
   GetOneCardDTO,
   GetPaginationCardDTO,
+  UpdateCardDTO,
   UpdateCardStateDTO,
 } from './card.dto';
 import { CardService } from './card.service';
@@ -59,6 +60,20 @@ export class CardController {
     try {
       body.userId = user.getId();
       await this.cardService.delete(body);
+      return {};
+    } catch (error) {
+      throw exceptionHandler(error);
+    }
+  }
+
+  @Patch()
+  async update(
+    @GetCurrentUser() user: CurrentUser,
+    @Body() body: UpdateCardDTO,
+  ) {
+    try {
+      body.userId = user.getId();
+      await this.cardService.update(body);
       return {};
     } catch (error) {
       throw exceptionHandler(error);

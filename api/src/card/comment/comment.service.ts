@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { MYSQL_MAIN, PERPAGE } from '@/common/constants';
@@ -9,6 +13,7 @@ import {
   CreateCommentDTO,
   DeleteCommentDTO,
   GetPaginationCommentDTO,
+  UpdateCommentDTO,
 } from './comment.dto';
 
 @Injectable()
@@ -36,6 +41,37 @@ export class CommentService {
     }
   }
 
+  async update(params: UpdateCommentDTO): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+      const comment = await queryRunner.manager.findOneOrFail(Comment, {
+        where: { id: Number(params.commentId) },
+      });
+
+      if (Number(comment.userId) !== Number(params.userId)) {
+        throw new BadRequestException(EXCEPTION_COMMON.PERMISSION_DENIED);
+      }
+
+      const result = await queryRunner.manager.update(
+        Comment,
+        { id: Number(comment.id) },
+        { message: String(params.message) },
+      );
+
+      if (result.affected === 0) {
+        throw new NotFoundException(EXCEPTION_COMMON.AFFECTED_ROWS_ZERO);
+      }
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
   async delete(params: DeleteCommentDTO): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
     try {
@@ -46,7 +82,6 @@ export class CommentService {
        */
       const result = await queryRunner.manager.softDelete(Comment, {
         id: Number(params.commentId),
-        cardId: Number(params.cardId),
       });
 
       if (result.affected === 0) {
