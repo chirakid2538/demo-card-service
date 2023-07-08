@@ -53,7 +53,7 @@ For production mode
 
 ### API Enpoint
 
-Postman Collection [โหลดไฟล์](doc/demo_app_001.postman_collection.json)
+Postman Collection แนบตัวอย่าง Request, Response [โหลดไฟล์](doc/demo_app_001.postman_collection.json)
 
 Postman Env [โหลดไฟล์](doc/demo.postman_environment.json)
 
