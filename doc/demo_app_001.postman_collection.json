@@ -1,0 +1,1468 @@
+{
+	"info": {
+		"_postman_id": "c5eb3184-2e2b-4321-949c-304a821b2db5",
+		"name": "demo_app_001",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2559907"
+	},
+	"item": [
+		{
+			"name": "/auth",
+			"item": [
+				{
+					"name": "/sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"aum.chirakid2@gmail.com\",\n    \"password\": \"123456789\",\n    \"displayName\": \"Chirakid kaweesirikon\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/sign-up",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/sign-up",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"aum.chirakid2@gmail.com\",\n    \"password\": \"123456789\",\n    \"displayName\": \"Chirakid kaweesirikon\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/sign-up",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"sign-up"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"uid\": 22\n}"
+						}
+					]
+				},
+				{
+					"name": "/sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"if (jsonData) {",
+									"    pm.environment.set(\"idToken\", jsonData.idToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"aum.chirakid3@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/sign-in",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/sign-in",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"aum\",\n    \"password\": \"aum1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/sign-in",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"idToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYXVtLmNoaXJha2lkQGdtYWlsLmNvbSIsImRpc3BsYXlOYW1lIjoiQ2hpcmFraWQgS2F3ZWVzaXJpa29uIiwicHJvZmlsZUltYWdlVVJMIjoiaHR0cDovL2xvY2FsaG9zdDozMDAxL3N0b3JhZ2UvdXNlci9hdmF0YXIvYjgwOWFjOTEtYmY0Ny00Y2Y4LWI3YTktYjU3NWE4YzdjMzk2LVNjcmVlbnNob3QlMjAyNTY2LTA3LTA3JTIwYXQlMjAyMS4wMy4yNC5wbmciLCJjcmVhdGVkQXQiOiIyMDIzLTA3LTA3VDEzOjMyOjQ0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTA3LTA4VDA2OjQxOjE2LjAwMFoiLCJpYXQiOjE2ODg3OTkwOTAsImV4cCI6MTY4ODgwMjY5MH0.b5JnHzwNIuTNV0thgEWZxvzM_AID87J4tqpHuyXniv4\"\n}"
+						}
+					]
+				},
+				{
+					"name": "/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/user",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/user",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"user"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"sub\": 22,\n    \"email\": \"aum.chirakid3@gmail.com\",\n    \"displayName\": \"Chirakid kaweesirikon\",\n    \"profileImageURL\": \"http://localhost:3001/upload/user/avatar/04e5fa61-915f-495e-adab-176a9cf004d2-2.png\",\n    \"createdAt\": \"2023-07-08T06:48:12.000Z\",\n    \"updatedAt\": \"2023-07-08T07:06:13.000Z\",\n    \"iat\": 1688827346,\n    \"exp\": 1688830946\n}"
+						}
+					]
+				},
+				{
+					"name": "/user/profile-image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/k.chirakid/Desktop/2.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/user/profile-image",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"user",
+								"profile-image"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/user/profile-image",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/Users/k.chirakid/Desktop/2.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/user/profile-image",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"user",
+										"profile-image"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "/user/profile-image - file-required",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/Users/k.chirakid/Desktop/2.png",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/auth/user/profile-image",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"auth",
+										"user",
+										"profile-image"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"error/file-required\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/card",
+			"item": [
+				{
+					"name": "/comment",
+					"item": [
+						{
+							"name": "/",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardId\": 1,\n    \"message\": \"มาแล้วครับ คน2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card/comment",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card",
+										"comment"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "/",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"cardId\": 1,\n    \"message\": \"มาแล้วครับ คน2\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/card/comment",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"card",
+												"comment"
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"name": "Content-Type",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"commentId\": 3\n}"
+								}
+							]
+						},
+						{
+							"name": "/",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"commentId\": 2,\n    \"message\": \"มาแล้วครับ คน2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card/comment",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card",
+										"comment"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "/",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"cardId\": 1,\n    \"message\": \"มาแล้วครับ คน2\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/card/comment",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"card",
+												"comment"
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"name": "Content-Type",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								},
+								{
+									"name": "/ - user-id-not-match",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"commentId\": 2,\n    \"message\": \"มาแล้วครับ คน2\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/card/comment",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"card",
+												"comment"
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"name": "Content-Type",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"error/permission-denied\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+								}
+							]
+						},
+						{
+							"name": "/",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"commentId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card/comment",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card",
+										"comment"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "/",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"commentId\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/card/comment",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"card",
+												"comment"
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"name": "Content-Type",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						},
+						{
+							"name": "/pagination",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{idToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card/comment/pagination?page=1&perpage=10",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card",
+										"comment",
+										"pagination"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perpage",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "/comment/pagination",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}/card/comment/pagination?page=1&perpage=10",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"card",
+												"comment",
+												"pagination"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "perpage",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"name": "Content-Type",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"page\": 1,\n    \"pages\": 1,\n    \"total\": 1,\n    \"items\": [\n        {\n            \"id\": 2,\n            \"message\": \"มาแล้วครับ คน2\",\n            \"createdAt\": \"2023-07-08T06:51:43.000Z\",\n            \"updatedAt\": \"2023-07-08T06:51:43.000Z\",\n            \"user\": {\n                \"id\": 1,\n                \"displayName\": \"Chirakid Kaweesirikon\",\n                \"email\": \"aum.chirakid@gmail.com\",\n                \"profileImageURL\": \"http://localhost:3001/storage/user/avatar/b809ac91-bf47-4cf8-b7a9-b575a8c7c396-Screenshot%202566-07-07%20at%2021.03.24.png\"\n            }\n        }\n    ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"สวัสดีครับ อั้มมาแล้ว\",\n    \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/card",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"card"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"สวัสดีครับ อั้มมาแล้ว\",\n    \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 6\n}"
+						}
+					]
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/card?cardId=1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"card"
+							],
+							"query": [
+								{
+									"key": "cardId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card?cardId=1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card"
+									],
+									"query": [
+										{
+											"key": "cardId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"userId\": 1,\n    \"title\": \"สวัสดีครับ\",\n    \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n    \"state\": \"to_do\",\n    \"createdAt\": \"2023-07-07T13:44:23.000Z\",\n    \"updatedAt\": \"2023-07-07T13:44:23.000Z\",\n    \"deletedAt\": null,\n    \"archivedAt\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardId\": 6,\n    \"title\": \"สวัสดีครับ อั้มมาแล้ว 6\",\n    \"message\": \"-> 6 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/card",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"card"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardId\": 6,\n    \"title\": \"สวัสดีครับ อั้มมาแล้ว 6\",\n    \"message\": \"-> 6 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/card",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"card"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "/state",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardId\": 1,\n    \"state\": \"in_progress\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/card/state",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"card",
+								"state"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/state",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardId\": 1,\n    \"state\": \"in_progress\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card/state",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card",
+										"state"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "/pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/card/pagination?page=1&perpage=10&query=",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"card",
+								"pagination"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "perpage",
+									"value": "10"
+								},
+								{
+									"key": "state",
+									"value": "in_progress",
+									"description": "optional to_do, in_progress, done",
+									"disabled": true
+								},
+								{
+									"key": "query",
+									"value": "",
+									"description": "optional %query%"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/pagination",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card/pagination?page=1&perpage=1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card",
+										"pagination"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "perpage",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"page\": 1,\n    \"pages\": 1,\n    \"total\": 5,\n    \"items\": [\n        {\n            \"id\": 6,\n            \"title\": \"สวัสดีครับ อั้มมาแล้ว\",\n            \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n            \"state\": \"to_do\",\n            \"createdAt\": \"2023-07-08T06:50:43.000Z\",\n            \"updatedAt\": \"2023-07-08T06:50:43.000Z\",\n            \"user\": {\n                \"id\": 22,\n                \"displayName\": \"Chirakid kaweesirikon\",\n                \"email\": \"aum.chirakid3@gmail.com\",\n                \"profileImageURL\": null\n            }\n        },\n        {\n            \"id\": 5,\n            \"title\": \"สวัสดีครับ อั้มมาแล้ว\",\n            \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n            \"state\": \"to_do\",\n            \"createdAt\": \"2023-07-07T13:46:14.000Z\",\n            \"updatedAt\": \"2023-07-07T13:46:14.000Z\",\n            \"user\": {\n                \"id\": 1,\n                \"displayName\": \"Chirakid Kaweesirikon\",\n                \"email\": \"aum.chirakid@gmail.com\",\n                \"profileImageURL\": \"http://localhost:3001/storage/user/avatar/b809ac91-bf47-4cf8-b7a9-b575a8c7c396-Screenshot%202566-07-07%20at%2021.03.24.png\"\n            }\n        },\n        {\n            \"id\": 4,\n            \"title\": \"สวัสดีครับ\",\n            \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n            \"state\": \"to_do\",\n            \"createdAt\": \"2023-07-07T13:44:27.000Z\",\n            \"updatedAt\": \"2023-07-07T13:44:27.000Z\",\n            \"user\": {\n                \"id\": 1,\n                \"displayName\": \"Chirakid Kaweesirikon\",\n                \"email\": \"aum.chirakid@gmail.com\",\n                \"profileImageURL\": \"http://localhost:3001/storage/user/avatar/b809ac91-bf47-4cf8-b7a9-b575a8c7c396-Screenshot%202566-07-07%20at%2021.03.24.png\"\n            }\n        },\n        {\n            \"id\": 3,\n            \"title\": \"สวัสดีครับ\",\n            \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n            \"state\": \"in_progress\",\n            \"createdAt\": \"2023-07-07T13:44:26.000Z\",\n            \"updatedAt\": \"2023-07-07T13:44:36.000Z\",\n            \"user\": {\n                \"id\": 1,\n                \"displayName\": \"Chirakid Kaweesirikon\",\n                \"email\": \"aum.chirakid@gmail.com\",\n                \"profileImageURL\": \"http://localhost:3001/storage/user/avatar/b809ac91-bf47-4cf8-b7a9-b575a8c7c396-Screenshot%202566-07-07%20at%2021.03.24.png\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"title\": \"สวัสดีครับ\",\n            \"message\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n            \"state\": \"to_do\",\n            \"createdAt\": \"2023-07-07T13:44:23.000Z\",\n            \"updatedAt\": \"2023-07-07T13:44:23.000Z\",\n            \"user\": {\n                \"id\": 1,\n                \"displayName\": \"Chirakid Kaweesirikon\",\n                \"email\": \"aum.chirakid@gmail.com\",\n                \"profileImageURL\": \"http://localhost:3001/storage/user/avatar/b809ac91-bf47-4cf8-b7a9-b575a8c7c396-Screenshot%202566-07-07%20at%2021.03.24.png\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "/archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{idToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardId\": 6\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/card/archive",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"card",
+								"archive"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/archive",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardId\": 6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/card/archive",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"card",
+										"archive"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{idToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
