@@ -28,7 +28,7 @@ export function UploadFileInterceptor(
   class Interceptor implements NestInterceptor {
     fileInterceptor: NestInterceptor;
     constructor() {
-      const rootDir = process.env.UPLOADED_DESTINATION ?? 'storage';
+      const rootDir = process.env.UPLOADED_DESTINATION ?? 'public/upload';
 
       const destination = `${rootDir}/${options.path}`;
       const limits = options?.limits ?? {};
