@@ -1,4 +1,4 @@
-## Demo app
+## Demo card service
 
 ### Repository structure
 
