@@ -14,12 +14,22 @@ export class CreateUserTable1688710095815 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'username',
+            name: 'display_name',
+            type: 'varchar',
+          },
+          {
+            name: 'email',
             type: 'varchar',
           },
           {
             name: 'password',
             type: 'varchar',
+          },
+          {
+            name: 'profile_image',
+            type: 'varchar',
+            default: null,
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -39,8 +49,8 @@ export class CreateUserTable1688710095815 implements MigrationInterface {
     await queryRunner.createIndex(
       'user',
       new TableIndex({
-        name: 'uniq_username',
-        columnNames: ['username'],
+        name: 'uniq_user_email',
+        columnNames: ['email'],
         isUnique: true,
       }),
     );

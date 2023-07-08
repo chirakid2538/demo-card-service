@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Card } from './card.entity';
@@ -33,6 +34,9 @@ export class Comment {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date | null;
 
   @ManyToOne(() => User, (_) => _.comments)
   @JoinColumn({ name: 'user_id' })

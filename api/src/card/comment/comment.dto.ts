@@ -22,6 +22,19 @@ export class CreateCommentDTO {
   message: string;
 }
 
+export class DeleteCommentDTO {
+  @Exclude()
+  userId: number;
+
+  @IsInt()
+  @Min(1)
+  cardId;
+
+  @IsInt()
+  @Min(1)
+  commentId;
+}
+
 export class GetPaginationCommentDTO {
   @Type(() => Number)
   @IsInt()

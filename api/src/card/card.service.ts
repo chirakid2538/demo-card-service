@@ -1,17 +1,19 @@
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { DataSource, Like } from 'typeorm';
 import { MYSQL_MAIN, PERPAGE } from '@/common/constants';
+import date from '@/common/utils/date.util';
+import { EXCEPTION_COMMON } from '@/common/constants/exception';
+import { ResponsePaginate, ResponsePost } from '@/common/interfaces';
+import { Card } from '@/entity/card.entity';
 import {
   ArchiveCardDTO,
   CreateCardDTO,
+  DeleteCardDTO,
   GetOneCardDTO,
   GetPaginationCardDTO,
+  UpdateCardStateDTO,
 } from './card.dto';
-import { Card } from '@/entity/card.entity';
-import { ResponsePaginate, ResponsePost } from '@/common/interfaces';
-import date from '@/common/utils/date.util';
-import { EXCEPTION_COMMON } from '@/common/constants/exception';
 
 @Injectable()
 export class CardService {
@@ -44,12 +46,39 @@ export class CardService {
     const queryRunner = this.dataSource.createQueryRunner();
     try {
       await queryRunner.startTransaction();
-      const card = await queryRunner.manager.findOneByOrFail(Card, {
-        id: Number(params.cardId),
-        archivedAt: null,
+      const card = await queryRunner.manager.findOneOrFail(Card, {
+        where: {
+          id: Number(params.cardId),
+          archivedAt: null,
+        },
       });
       await queryRunner.commitTransaction();
       return card;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async delete(params: DeleteCardDTO): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+      /**
+       * เงื่อนไขการลบ
+       * - ลบได้เฉพาะของตัวเลข หรือ มาการตั้งค่าบทบาทในระบบผู้ใช้งาน
+       */
+      const result = await queryRunner.manager.softDelete(Card, {
+        id: Number(params.cardId),
+      });
+
+      if (result.affected === 0) {
+        throw new NotFoundException(EXCEPTION_COMMON.AFFECTED_ROWS_ZERO);
+      }
+
+      await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
@@ -70,6 +99,11 @@ export class CardService {
       const [cards, total] = await queryRunner.manager.findAndCount(Card, {
         take,
         skip,
+        where: {
+          ...(params.state ? { state: params.state } : {}),
+          ...(params.query ? { title: Like(`%${params.query}%`) } : {}),
+          archivedAt: null,
+        },
         relations: {
           user: true,
         },
@@ -79,9 +113,12 @@ export class CardService {
           message: true,
           state: true,
           createdAt: true,
+          updatedAt: true,
           user: {
             id: true,
-            username: true,
+            displayName: true,
+            email: true,
+            profileImage: true,
           },
         },
         order: { id: 'DESC' },
@@ -93,9 +130,12 @@ export class CardService {
         message: card.message,
         state: card.state,
         createdAt: card.createdAt,
+        updatedAt: card.updatedAt,
         user: {
           id: card.user.id,
-          username: card.user.username,
+          displayName: card.user.displayName,
+          email: card.user.email,
+          profileImageURL: card.user.getProfileImageURL(),
         },
       }));
 
@@ -108,7 +148,7 @@ export class CardService {
     }
   }
 
-  async archive(params: ArchiveCardDTO) {
+  async archive(params: ArchiveCardDTO): Promise<void> {
     const queryRunner = await this.dataSource.createQueryRunner();
     try {
       await queryRunner.startTransaction();
@@ -116,6 +156,31 @@ export class CardService {
         Card,
         { id: Number(params.cardId), archivedAt: null },
         { archivedAt: date().toDate() },
+      );
+
+      if (result.affected === 0) {
+        throw new NotFoundException(EXCEPTION_COMMON.AFFECTED_ROWS_ZERO);
+      }
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async updateState(params: UpdateCardStateDTO): Promise<void> {
+    const cardId = Number(params.cardId);
+
+    const queryRunner = await this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+      const result = await queryRunner.manager.update(
+        Card,
+        { id: cardId },
+        { state: params.state },
       );
 
       if (result.affected === 0) {

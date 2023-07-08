@@ -7,11 +7,12 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Comment } from './comment.entity';
 
-enum CardState {
+export enum CardState {
   to_do = 'to_do',
   in_progress = 'in_progress',
   done = 'done',
@@ -42,6 +43,9 @@ export class Card {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date | null;
 
   @Column({ name: 'archived_at' })
   archivedAt: Date | null;

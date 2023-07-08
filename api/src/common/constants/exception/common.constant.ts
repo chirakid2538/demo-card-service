@@ -8,4 +8,8 @@ export const EXCEPTION_COMMON = {
 
   SOMETHING_WENT_WRONG: 'error/something-went-wrong',
   VALIDATE_FAILED: 'error/validate-failed',
+
+  FILE_REQUIRED: 'error/file-required',
+  FILE_TOO_LARGE: 'error/file-too-large',
+  FILE_TYPE_NOT_ALLOWED: 'error/file-type-not-allowed',
 };

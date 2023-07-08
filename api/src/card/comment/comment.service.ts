@@ -1,10 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { MYSQL_MAIN, PERPAGE } from '@/common/constants';
-import { Comment } from '@/entity/comment.entity';
-import { CreateCommentDTO, GetPaginationCommentDTO } from './comment.dto';
 import { ResponseComment, ResponsePaginate } from '@/common/interfaces';
+import { EXCEPTION_COMMON } from '@/common/constants/exception';
+import { Comment } from '@/entity/comment.entity';
+import {
+  CreateCommentDTO,
+  DeleteCommentDTO,
+  GetPaginationCommentDTO,
+} from './comment.dto';
 
 @Injectable()
 export class CommentService {
@@ -31,6 +36,32 @@ export class CommentService {
     }
   }
 
+  async delete(params: DeleteCommentDTO): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+      /**
+       * เงื่อนไขการลบ
+       * - ลบได้เฉพาะของตัวเลข หรือ มาการตั้งค่าบทบาทในระบบผู้ใช้งาน
+       */
+      const result = await queryRunner.manager.softDelete(Comment, {
+        id: Number(params.commentId),
+        cardId: Number(params.cardId),
+      });
+
+      if (result.affected === 0) {
+        throw new NotFoundException(EXCEPTION_COMMON.AFFECTED_ROWS_ZERO);
+      }
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
   async pagination(
     params: GetPaginationCommentDTO,
   ): Promise<ResponsePaginate<ResponseComment>> {
@@ -50,9 +81,12 @@ export class CommentService {
           id: true,
           message: true,
           createdAt: true,
+          updatedAt: true,
           user: {
             id: true,
-            username: true,
+            displayName: true,
+            email: true,
+            profileImage: true,
           },
         },
         order: { id: 'DESC' },
@@ -62,9 +96,12 @@ export class CommentService {
         id: card.id,
         message: card.message,
         createdAt: card.createdAt,
+        updatedAt: card.updatedAt,
         user: {
           id: card.user.id,
-          username: card.user.username,
+          displayName: card.user.displayName,
+          email: card.user.email,
+          profileImageURL: card.user.getProfileImageURL(),
         },
       }));
 

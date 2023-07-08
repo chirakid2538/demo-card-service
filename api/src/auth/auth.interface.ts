@@ -1,6 +1,8 @@
 export interface SignDataJWT {
   sub: number;
-  username: string;
+  displayName: string;
+  email: string;
+  profileImageURL: string | null;
   createdAt: string;
   updatedAt: string;
 }

@@ -42,6 +42,12 @@ export class CreateCommentTable1688719360853 implements MigrationInterface {
             type: 'datetime',
             default: 'NOW() ON UPDATE NOW()',
           },
+          {
+            name: 'deleted_at',
+            type: 'datetime',
+            default: null,
+            isNullable: true,
+          },
         ],
       }),
       false,

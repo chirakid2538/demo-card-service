@@ -26,7 +26,8 @@ export class AuthService {
     try {
       await queryRunner.startTransaction();
       const user = new User();
-      user.username = String(params.username);
+      user.displayName = String(params.displayName);
+      user.email = String(params.email);
       user.password = await hash.encode(params.password);
       await queryRunner.manager.save(User, user);
       await queryRunner.commitTransaction();
@@ -45,10 +46,10 @@ export class AuthService {
     try {
       await queryRunner.startTransaction();
       user = await queryRunner.manager.findOneByOrFail(User, {
-        username: String(params.username),
+        email: String(params.email),
       });
 
-      if (await user.validPassword(params.password)) {
+      if ((await user.validPassword(params.password)) === false) {
         throw new BadRequestException(EXCEPTION_AUTH.PASSWORD_WRONG);
       }
       await queryRunner.commitTransaction();
@@ -61,7 +62,9 @@ export class AuthService {
 
     const signData: SignDataJWT = {
       sub: user.id,
-      username: user.username,
+      email: user.email,
+      displayName: user.displayName,
+      profileImageURL: user.getProfileImageURL(),
       createdAt: user.createdAt.toISOString(),
       updatedAt: user.updatedAt.toISOString(),
     };
@@ -70,6 +73,31 @@ export class AuthService {
     });
 
     return idToken;
+  }
+
+  async updateProfileImage({
+    userId,
+    file,
+  }: {
+    file: Express.Multer.File;
+    userId: number;
+  }): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+
+      await queryRunner.manager.update(
+        User,
+        { id: Number(userId) },
+        { profileImage: file.path },
+      );
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async verifyIdToken(idToken: string): Promise<SignDataJWT> {

@@ -54,6 +54,12 @@ export class CreateCardTable1688710097434 implements MigrationInterface {
             default: null,
             isNullable: true,
           },
+          {
+            name: 'deleted_at',
+            type: 'datetime',
+            default: null,
+            isNullable: true,
+          },
         ],
       }),
       false,

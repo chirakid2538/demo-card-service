@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { exceptionHandler } from '@/common/utils';
+import { ResponsePaginate, ResponsePost } from '@/common/interfaces';
 import { Card } from '@/entity/card.entity';
 import {
   CurrentUser,
@@ -8,11 +17,12 @@ import {
 import {
   ArchiveCardDTO,
   CreateCardDTO,
+  DeleteCardDTO,
   GetOneCardDTO,
   GetPaginationCardDTO,
+  UpdateCardStateDTO,
 } from './card.dto';
 import { CardService } from './card.service';
-import { ResponsePaginate, ResponsePost } from '@/common/interfaces';
 
 @Controller('card')
 export class CardController {
@@ -41,6 +51,20 @@ export class CardController {
     }
   }
 
+  @Delete()
+  async delete(
+    @GetCurrentUser() user: CurrentUser,
+    @Body() body: DeleteCardDTO,
+  ) {
+    try {
+      body.userId = user.getId();
+      await this.cardService.delete(body);
+      return {};
+    } catch (error) {
+      throw exceptionHandler(error);
+    }
+  }
+
   @Get('pagination')
   async pagination(
     @Query() query: GetPaginationCardDTO,
@@ -57,6 +81,16 @@ export class CardController {
   async archive(@Body() body: ArchiveCardDTO) {
     try {
       await this.cardService.archive(body);
+      return {};
+    } catch (error) {
+      throw exceptionHandler(error);
+    }
+  }
+
+  @Patch('state')
+  async updateState(@Body() body: UpdateCardStateDTO) {
+    try {
+      await this.cardService.updateState(body);
       return {};
     } catch (error) {
       throw exceptionHandler(error);

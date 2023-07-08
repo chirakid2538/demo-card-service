@@ -16,11 +16,17 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ name: 'display_name' })
+  displayName: string;
+
   @Column()
-  username: string;
+  email: string;
 
   @Column()
   password: string;
+
+  @Column({ name: 'profile_image' })
+  profileImage: string | null;
 
   @CreateDateColumn({
     name: 'created_at',
@@ -40,7 +46,16 @@ export class User {
   @JoinColumn({ name: 'user_id' })
   comments: Comment[];
 
-  public async validPassword(password): Promise<boolean> {
+  profileImageURL?: string | null;
+
+  public async validPassword(password: string): Promise<boolean> {
     return await hash.compare(password, this.password);
+  }
+
+  public getProfileImageURL(): string | null {
+    const baseURL = process.env.CDN_BASE_URL;
+    return baseURL && this.profileImage
+      ? new URL(`${baseURL}/${this.profileImage}`).toString()
+      : null;
   }
 }

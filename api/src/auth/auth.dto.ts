@@ -1,9 +1,14 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class SignUpDTO {
   @IsNotEmpty()
   @IsString()
-  username: string;
+  displayName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   @IsString()
@@ -13,7 +18,8 @@ export class SignUpDTO {
 export class SignInDTO {
   @IsNotEmpty()
   @IsString()
-  username: string;
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   @IsString()

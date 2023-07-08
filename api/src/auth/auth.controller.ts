@@ -1,5 +1,18 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { exceptionHandler } from '@/common/utils';
+import { EXCEPTION_COMMON } from '@/common/constants/exception';
+import { imageFileFilter } from '@/common/filters/image-file.filter';
+import { UploadFileInterceptor } from '@/common/interceptors/upload-file.interceptor';
+
 import { SignInDTO, SignUpDTO } from './auth.dto';
 import {
   CurrentUser,
@@ -38,6 +51,27 @@ export class AuthController {
   ): Promise<SignDataJWT> {
     try {
       return user.getJWTData();
+    } catch (error) {
+      throw exceptionHandler(error);
+    }
+  }
+
+  @Patch('user/profile-image')
+  @UseInterceptors(
+    UploadFileInterceptor({
+      fieldName: 'file',
+      path: 'user/avatar',
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async updateProfileImage(
+    @GetCurrentUser() user: CurrentUser,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    try {
+      if (!file) throw new BadRequestException(EXCEPTION_COMMON.FILE_REQUIRED);
+      await this.authService.updateProfileImage({ file, userId: user.getId() });
+      return {};
     } catch (error) {
       throw exceptionHandler(error);
     }
