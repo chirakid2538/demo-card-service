@@ -4,9 +4,6 @@ services:
     container_name: api
     env_file:
       - ./api/.env
-    volumes:
-      - ./api:/app
-      - /app/node_modules
     ports:
       - ${API_EXTERNAL_PORT}:${API_INTERNAL_PORT}
     depends_on:
