@@ -1,11 +1,7 @@
-version: '3.8'
+version: "3.8"
 services:
   api:
     container_name: api
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    command: npm run start:dev
     env_file:
       - ./api/.env
     volumes:
@@ -13,19 +9,27 @@ services:
       - /app/node_modules
     ports:
       - ${API_EXTERNAL_PORT}:${API_INTERNAL_PORT}
-  portal:
-    container_name: portal
-    build:
-      context: ./portal
-      dockerfile: Dockerfile
-    command: npm run dev
-    env_file:
-      - ./portal/.env
-    volumes:
-      - ./portal:/app
-      - /app/node_modules
-    ports:
-      - ${PORTAL_EXTERNAL_PORT}:${PORTAL_INTERNAL_PORT}
     depends_on:
-      - api
-
+      - mysql
+  mysql:
+    image: mysql
+    container_name: mysql
+    volumes:
+      - ./mnt/mysql:/var/lib/mysql
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    command: --default-authentication-plugin=mysql_native_password --init-file /docker-entrypoint-initdb.d/setup.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - ${PMA_PORT}:80
+    environment:
+      PMA_HOST: ${PMA_DB_ENGINE}
+      UPLOAD_LIMIT: 1000M
+    depends_on:
+      - mysql

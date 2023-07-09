@@ -2,13 +2,17 @@
 
 ### Repository structure
 
-| Type     | Name                  | Description                                         |
-| :------- | :-------------------- | :-------------------------------------------------- |
-| `folder` | `api`                 | Api service (NestJs)                                |
-| `folder` | `mnt`                 | Mount volume container mysql service                |
-| `file`   | `.env`                | ไฟล์ env สำหรับ docker-compose.yaml                 |
-| `file`   | `docker-compose.yaml` | ไฟล์ สำหรับ run container api, mysql                |
-| `file`   | `dev.sh`              | ไฟล์ script สำหรับ run docker-compose ไฟล์ dev mode |
+| Type     | Name                       | Description                                                |
+| :------- | :------------------------- | :--------------------------------------------------------- |
+| `folder` | `api`                      | Api service (NestJs)                                       |
+| `folder` | `mnt`                      | Mount volume container mysql service                       |
+| `file`   | `.env`                     | ไฟล์ env สำหรับ docker-compose.yaml                        |
+| `file`   | `docker-compose.yaml`      | ไฟล์ สำหรับ run container api, mysql                       |
+| `file`   | `docker-compose-dev.yaml`  | ไฟล์ docker-compose สำหรับ dev mode                        |
+| `file`   | `docker-compose-prod.yaml` | ไฟล์ docker-compose สำหรับ prod mode                       |
+| `file`   | `dev.sh`                   | ไฟล์ script สำหรับ run docker-compose ไฟล์ dev mode        |
+| `file`   | `prod.sh`                  | ไฟล์ script สำหรับ run docker-compose ไฟล์ production mode |
+| `file`   | `setup.sql`                  | ไฟล์ init database |
 
 ### Environment variables
 
@@ -17,6 +21,10 @@
 | :-------- | :------- | :------------------------- |
 | `API_EXTERNAL_PORT`| `number` | **Required**. PORT สำหรับเข้าถึงจากภายนอก |
 | `API_INTERNAL_PORT` | `number` | **Required**. PORT container|
+| `MYSQL_ROOT_PASSWORD` | `number` | **Required**. 1234|
+| `MYSQL_PORT` | `number` | **Required**. 3306|
+| `PMA_PORT` | `number` | **Required**. 3307|
+| `PMA_DB_ENGINE` | `number` | **Required**. mysql|
 
 ไฟล์ `/.env`
 | Parameter | Type | Description |
@@ -25,8 +33,8 @@
 | `MYSQL_PROTOCOL` | `string` | **Required**. mysql|
 | `MYSQL_USER` | `string` | **Required**. root|
 | `MYSQL_PASSWORD` | `string` | **Required**. 1234|
-| `MYSQL_HOST` | `string` | **Required**. |
-| `MYSQL_PORT` | `string` | **Required**. |
+| `MYSQL_HOST` | `string` | **Required**. mysql |
+| `MYSQL_PORT` | `string` | **Required**. 3306 |
 | `MYSQL_LOGGING` | `string` | 1 = show sql log, 0 = none |
 | `MYSQL_DATABASE` | `string` | **Required**. demo_app_001 |
 | `JWT_SECRET` | `string` | **Required**. |
