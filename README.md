@@ -45,6 +45,12 @@
 
 ![Database schema](doc/database-schema.png)
 
+`user table` สำหรับเก็บข้อมูลผู้ใช้งาน
+
+`card table` สำหรับเก็บข้อมูลการ์ด
+
+`comment table` สำหรับเก็บข้อมูคอมเม้นต์
+
 ### How to run
 
 For dev mode
