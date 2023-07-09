@@ -1,5 +1,24 @@
 ## Demo card service
 
+### How to run
+
+1. `clone` repo demo-card-service
+
+2. `cd demo-card-service` เข้าไปยัง folder 
+
+3. run service
+
+For dev mode
+
+```bash
+  ./dev.sh
+```
+
+For production mode
+
+```bash
+  ./production.sh
+```
 ### Repository structure
 
 | Type     | Name                       | Description                                                |
@@ -50,20 +69,6 @@
 `card table` สำหรับเก็บข้อมูลการ์ด
 
 `comment table` สำหรับเก็บข้อมูคอมเม้นต์
-
-### How to run
-
-For dev mode
-
-```bash
-  ./dev.sh
-```
-
-For production mode
-
-```bash
-  ./production.sh
-```
 
 ### API Enpoint
 
