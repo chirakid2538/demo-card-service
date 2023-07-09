@@ -12,12 +12,12 @@ import { exceptionHandler } from '@/common/utils';
 import { EXCEPTION_COMMON } from '@/common/constants/exception';
 import { imageFileFilter } from '@/common/filters/image-file.filter';
 import { UploadFileInterceptor } from '@/common/interceptors/upload-file.interceptor';
-
-import { SignInDTO, SignUpDTO } from './auth.dto';
 import {
   CurrentUser,
   GetCurrentUser,
-} from '../decorators/current-user.decorator';
+} from '@/common/decorators/current-user.decorator';
+import { SignInDTO, SignUpDTO } from './auth.dto';
+
 import { AuthService } from './auth.service';
 import { SignDataJWT } from './auth.interface';
 

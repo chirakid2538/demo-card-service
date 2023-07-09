@@ -8,6 +8,11 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ResponseComment, ResponsePaginate } from '@/common/interfaces';
+import {
+  CurrentUser,
+  GetCurrentUser,
+} from '@/common/decorators/current-user.decorator';
 import {
   CreateCommentDTO,
   DeleteCommentDTO,
@@ -15,11 +20,6 @@ import {
   UpdateCommentDTO,
 } from './comment.dto';
 import { CommentService } from './comment.service';
-import { ResponseComment, ResponsePaginate } from '@/common/interfaces';
-import {
-  CurrentUser,
-  GetCurrentUser,
-} from 'src/decorators/current-user.decorator';
 
 @Controller('card/comment')
 export class CommentController {

@@ -13,7 +13,7 @@ import { Card } from '@/entity/card.entity';
 import {
   CurrentUser,
   GetCurrentUser,
-} from 'src/decorators/current-user.decorator';
+} from '@/common/decorators/current-user.decorator';
 import {
   ArchiveCardDTO,
   CreateCardDTO,

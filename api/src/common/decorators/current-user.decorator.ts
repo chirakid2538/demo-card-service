@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { SignDataJWT } from '../auth/auth.interface';
+import { SignDataJWT } from '../../auth/auth.interface';
 
 export type CurrentUser = {
   getId: () => number;
