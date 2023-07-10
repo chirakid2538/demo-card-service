@@ -4,3 +4,5 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+    volumes:
+      - ./api/public:/app/public
